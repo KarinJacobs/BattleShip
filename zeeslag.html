@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body>
+    
+<script>
+
+explainer();
+
+let boats = getRandomNumber(0, 8);
+let misses = 0;
+let score = 0;
+let number = 0;
+let previousNumbers = [];
+let hit = 0;
+
+while (misses < 3 && score < 3) {
+    getInput();
+    playGame();
+}
+
+if (score == 3) {
+    alert("Game over! You Won.\nMisses: " + misses + "\nScores: " + score);
+} else {
+    alert("Game over! You Lost.\nMisses: " + misses + "\nScores: " + score);
+}
+
+function explainer() {
+    alert("Explanation Sea Battle:\nGiven three boats hiding in the water on places 0 to 7. Each boat is in a seperate number. Guess where the boats are by entering a number ranging from 0 - 7. If you find all the boats, before you miss three times, you win the game!");
+}
+
+function getRandomNumber(min, max) {
+    let n = [];
+    let t;
+    while (n.length < 3) {
+        t = Math.floor(Math.random() * max) + min;
+        if (t != n[0] && t != n[1]) {
+            n.push(t);
+        }
+    }
+    return n;
+}
+
+function getInput() {
+    number = parseInt(prompt("Pick a number (0 - 7) to sink the boat"));
+    if (isNaN(number) == true || number > 7) {
+        alert("Please enter a number between 0 and 7");
+        getInput();
+    }
+    if (previousNumbers.indexOf(number) != -1) {
+        alert("You already checked the water here");
+        getInput();
+    }
+}
+
+function playGame() {
+    previousNumbers.push(number);
+    if (boats.indexOf(number) != -1) {
+        alert("You sunk one boat. Well done!");
+        score++;
+    } else {
+        misses++;
+        alert("Miss!");
+    }
+}
+
+</script>
+
+</body>
+</html>
