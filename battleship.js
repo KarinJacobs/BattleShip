@@ -1,6 +1,7 @@
-function play() {
+var numberofwins = 0;
+var numberoflost = 0;
 
-    explainer();
+function play() {
 
     var data = {
         boats: getRandomNumber(0, 8),
@@ -10,17 +11,6 @@ function play() {
         previousNumbers: [],
         hit: 0,
     };
-
-    while (data.misses < 3 && data.score < 3) {
-        getInput();
-        playGame();
-    }
-
-    if (data.score == 3) {
-        alert("Game over! You Won.\nMisses: " + data.misses + "\nScores: " + data.score);
-    } else {
-        alert("Game over! You Lost.\nMisses: " + data.misses + "\nScores: " + data.score);
-    }
 
     function explainer() {
         alert("Explanation Sea Battle:\nGiven three boats hiding in the water on places 0 to 7. Each boat is in a seperate number. Guess where the boats are by entering a number ranging from 0 - 7. If you find all the boats, before you miss three times, you win the game!");
@@ -60,5 +50,26 @@ function play() {
             alert("Miss!");
         }
     }
+
+    function updateScore() {
+        document.getElementById("wins").innerHTML = numberofwins;
+        document.getElementById("lost").innerHTML = numberoflost;
+    }
+
+    explainer();
+    while (data.misses < 3 && data.score < 3) {
+        getInput();
+        playGame();
+    }
+    
+    if (data.score == 3) {
+        numberofwins++;
+        alert("Game over! You Won.\nMisses: " + data.misses + "\nScores: " + data.score);
+    } else if (data.misses == 3) {
+        numberoflost++;
+        alert("Game over! You Lost.\nMisses: " + data.misses + "\nScores: " + data.score);
+    }
+    
+    updateScore();
 
 }
