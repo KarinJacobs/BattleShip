@@ -1,73 +1,75 @@
-<!DOCTYPE html>
-<html>
+var numberofwins = 0;
+var numberoflost = 0;
 
-<head>
-    <!-- Google Tag Manager -->
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KG3D6SV');
-    </script>
-    <!-- End Google Tag Manager -->
+function play() {
 
-    <script>
-        window.dataLayer = window.dataLayer || [];
+    var data = {
+        boats: getRandomNumber(0, 8),
+        misses: 0,
+        score: 0,
+        number: 0,
+        previousNumbers: [],
+        hit: 0,
+    };
 
-        function gtag() {
-            dataLayer.push(arguments);
+    function explainer() {
+        alert("Explanation Sea Battle:\nGiven three boats hiding in the water on places 0 to 7. Each boat is in a seperate number. Guess where the boats are by entering a number ranging from 0 - 7. If you find all the boats, before you miss three times, you win the game!");
+    }
+
+    function getRandomNumber(min, max) {
+        let n = [];
+        let t;
+        while (n.length < 3) {
+            t = Math.floor(Math.random() * max) + min;
+            if (t != n[0] && t != n[1]) {
+                n.push(t);
+            }
         }
-        gtag('js', new Date());
+        return n;
+    }
 
-        gtag('config', 'UA-124724284-1');
-    </script>
-
-    <style>
-        body {
-            background: #FBFBEF;
+    function getInput() {
+        data.number = parseInt(prompt("Pick a number (0 - 7) to sink the boat"));
+        if (isNaN(data.number) == true || data.number > 7) {
+            alert("Please enter a number between 0 and 7");
+            getInput();
         }
-
-        h1 {
-            text-align: center;
+        if (data.previousNumbers.indexOf(data.number) != -1) {
+            alert("You already checked the water here");
+            getInput();
         }
+    }
 
-        button {
-            background-color: #08088A;
-            border: none;
-            color: white;
-            margin: auto;
-            display: block;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
+    function playGame() {
+        data.previousNumbers.push(data.number);
+        if (data.boats.indexOf(data.number) != -1) {
+            alert("You sunk one boat. Well done!");
+            data.score++;
+        } else {
+            data.misses++;
+            alert("Miss!");
         }
-    </style>
-</head>
+    }
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KG3D6SV" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    function updateScore() {
+        document.getElementById("wins").innerHTML = numberofwins;
+        document.getElementById("lost").innerHTML = numberoflost;
+    }
 
-    <h1>Battle Ship</h1>
-    <button onclick="play()">Start</button>
+    explainer();
+    while (data.misses < 3 && data.score < 3) {
+        getInput();
+        playGame();
+    }
+    
+    if (data.score == 3) {
+        numberofwins++;
+        alert("Game over! You Won.\nMisses: " + data.misses + "\nScores: " + data.score);
+    } else if (data.misses == 3) {
+        numberoflost++;
+        alert("Game over! You Lost.\nMisses: " + data.misses + "\nScores: " + data.score);
+    }
+    
+    updateScore();
 
-    <script src="battleship.js"></script>
-
-</body>
-
-</html>
+}
